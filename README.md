@@ -1,7 +1,7 @@
 # ai-rules-ios
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20macOS%20%7C%20tvOS%20%7C%20watchOS%20%7C%20visionOS-lightgrey.svg)]()
+![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20macOS%20%7C%20tvOS%20%7C%20watchOS%20%7C%20visionOS-lightgrey.svg)
 
 **Single source of truth for AI coding assistants in iOS projects.**
 
@@ -29,6 +29,7 @@ curl -fsSL https://raw.githubusercontent.com/dbmrq/ai-rules-ios/main/install.sh 
 ```
 
 This will:
+
 1. Add ai-rules-ios as a git subtree at `.ai-rules/`
 2. Create symlinks for all supported tools
 3. Commit the changes
@@ -70,4 +71,3 @@ Contributions are welcome! Please open an issue or pull request.
 ## License
 
 [MIT](LICENSE)
-
