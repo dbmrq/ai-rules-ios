@@ -39,7 +39,9 @@ mkdir -p .cursor/rules .augment/rules .github .claude/rules
 # Sync each destination
 for dest in "${DESTINATIONS[@]}"; do
     # Make writable if exists
-    [ -f "$dest" ] && chmod 644 "$dest" 2>/dev/null || true
+    if [ -f "$dest" ]; then
+        chmod 644 "$dest" 2>/dev/null || true
+    fi
     # Copy
     cp "$RULES_SOURCE" "$dest"
     # Make read-only

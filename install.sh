@@ -62,7 +62,9 @@ sync_rules() {
     for dest in .clinerules .windsurfrules .cursor/rules/always.mdc \
                 .augment/rules/always.md .github/copilot-instructions.md \
                 .claude/rules/always.md; do
-        [ -f "$dest" ] && chmod 644 "$dest" 2>/dev/null || true
+        if [ -f "$dest" ]; then
+            chmod 644 "$dest" 2>/dev/null || true
+        fi
     done
 
     # Copy to all destinations
