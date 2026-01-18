@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint Markdown
+        uses: DavidAnson/markdownlint-cli2-action@v19
+        with:
+          globs: '**/*.md'
+          config: '.markdownlint.json'
+
+      - name: Check shell scripts
+        run: |
+          shellcheck install.sh
+          shellcheck uninstall.sh
+
+      - name: Test install script syntax
+        run: bash -n install.sh
+
+      - name: Test uninstall script syntax
+        run: bash -n uninstall.sh
+
