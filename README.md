@@ -5,7 +5,7 @@
 
 **Single source of truth for AI coding assistants in iOS projects.**
 
-This project provides a shared set of iOS development guidelines that are symlinked for major AI coding assistants.
+This project provides a shared set of iOS development guidelines that are synced to all major AI coding assistants.
 
 See the rules in [`rules/always.md`](rules/always.md).
 
@@ -31,8 +31,9 @@ curl -fsSL https://raw.githubusercontent.com/dbmrq/ai-rules-ios/main/install.sh 
 This will:
 
 1. Add ai-rules-ios as a git subtree at `.ai-rules/`
-2. Create symlinks for all supported tools
-3. Commit the changes
+2. Copy rules to all supported tool locations (read-only)
+3. Install a pre-commit hook to keep rules in sync
+4. Commit the changes
 
 ### Installation Options
 
@@ -43,6 +44,18 @@ curl -fsSL https://raw.githubusercontent.com/dbmrq/ai-rules-ios/main/install.sh 
 # Install without committing
 curl -fsSL https://raw.githubusercontent.com/dbmrq/ai-rules-ios/main/install.sh | bash -s -- --no-commit
 ```
+
+## Editing Rules
+
+Edit only `.ai-rules/rules/always.md` — the other files are read-only copies.
+
+To sync changes immediately, double-click `sync.command` in Finder, or run:
+
+```bash
+.ai-rules/sync.command
+```
+
+The pre-commit hook will also sync automatically when you commit.
 
 ## Updating
 

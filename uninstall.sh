@@ -70,13 +70,15 @@ fi
 if [ "$DRY_RUN" = true ]; then
     echo "Would perform the following actions:"
     echo ""
-    echo "  1. Remove symlinks:"
-    [ -L ".clinerules" ] && echo "     .clinerules"
-    [ -L ".windsurfrules" ] && echo "     .windsurfrules"
-    [ -L ".cursor/rules/always.mdc" ] && echo "     .cursor/rules/always.mdc"
-    [ -L ".augment/rules/always.md" ] && echo "     .augment/rules/always.md"
-    [ -L ".github/copilot-instructions.md" ] && echo "     .github/copilot-instructions.md"
-    [ -L ".claude/rules/always.md" ] && echo "     .claude/rules/always.md"
+    echo "  1. Remove rule copies:"
+    [ -e ".clinerules" ] && echo "     .clinerules"
+    [ -e ".windsurfrules" ] && echo "     .windsurfrules"
+    [ -e ".cursor/rules/always.mdc" ] && echo "     .cursor/rules/always.mdc"
+    [ -e ".augment/rules/always.md" ] && echo "     .augment/rules/always.md"
+    [ -e ".github/copilot-instructions.md" ] && echo "     .github/copilot-instructions.md"
+    [ -e ".claude/rules/always.md" ] && echo "     .claude/rules/always.md"
+    echo ""
+    echo "  2. Clean up pre-commit hook"
     echo ""
     echo "  2. Remove subtree directory: $SUBTREE_DIR"
     echo ""
@@ -86,15 +88,26 @@ if [ "$DRY_RUN" = true ]; then
     exit 0
 fi
 
-echo "Removing symlinks..."
+echo "Removing rule copies..."
 
-# Remove symlinks (check if they exist and are symlinks before removing)
-[ -L ".clinerules" ] && rm ".clinerules"
-[ -L ".windsurfrules" ] && rm ".windsurfrules"
-[ -L ".cursor/rules/always.mdc" ] && rm ".cursor/rules/always.mdc"
-[ -L ".augment/rules/always.md" ] && rm ".augment/rules/always.md"
-[ -L ".github/copilot-instructions.md" ] && rm ".github/copilot-instructions.md"
-[ -L ".claude/rules/always.md" ] && rm ".claude/rules/always.md"
+# Remove rule copies (files or symlinks)
+[ -e ".clinerules" ] && rm ".clinerules"
+[ -e ".windsurfrules" ] && rm ".windsurfrules"
+[ -e ".cursor/rules/always.mdc" ] && rm ".cursor/rules/always.mdc"
+[ -e ".augment/rules/always.md" ] && rm ".augment/rules/always.md"
+[ -e ".github/copilot-instructions.md" ] && rm ".github/copilot-instructions.md"
+[ -e ".claude/rules/always.md" ] && rm ".claude/rules/always.md"
+
+# Remove pre-commit hook entries
+echo "Cleaning up pre-commit hook..."
+if [ -f ".git/hooks/pre-commit" ]; then
+    # Remove our hook section (from marker to end of our script block)
+    sed -i '' '/# ai-rules-ios sync/,/^fi$/d' .git/hooks/pre-commit 2>/dev/null || true
+    # If hook is now empty (just shebang), remove it
+    if [ "$(wc -l < .git/hooks/pre-commit | tr -d ' ')" -le 1 ]; then
+        rm .git/hooks/pre-commit
+    fi
+fi
 
 # Remove empty directories (only if empty)
 rmdir ".cursor/rules" 2>/dev/null || true
