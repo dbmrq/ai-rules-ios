@@ -51,18 +51,17 @@ for proj in "$ROOT"/*.xcodeproj; do
     break
   fi
 done
+# Prefer a dedicated Periphery DerivedData path. Avoid live Xcode DerivedData —
+# it often races and reports false positives / USR conflicts.
 INDEX_STORE=""
-if [[ -n "$PROJECT_NAME" ]]; then
-  INDEX_STORE="$(
-    {
-      find "$HOME/Library/Developer/Xcode/DerivedData" -type d -path "*${PROJECT_NAME}*/Index.noindex/DataStore" 2>/dev/null || true
-      find "/tmp/${PROJECT_NAME}PeripheryDD" -type d -path '*/Index.noindex/DataStore' 2>/dev/null || true
-    } | head -n 1
-  )"
+if [[ -n "$PROJECT_NAME" && -d "/tmp/${PROJECT_NAME}PeripheryDD/Index.noindex/DataStore" ]]; then
+  INDEX_STORE="/tmp/${PROJECT_NAME}PeripheryDD/Index.noindex/DataStore"
 fi
 if [[ -n "$INDEX_STORE" ]]; then
   PERI_ARGS+=(--skip-build --index-store-path "$INDEX_STORE")
   echo "Using index store: $INDEX_STORE"
+else
+  echo "No dedicated index store; Periphery will build (slower, accurate)."
 fi
 
 echo "==> Periphery debt (empty baseline override)"
