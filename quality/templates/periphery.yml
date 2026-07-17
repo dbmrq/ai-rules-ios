@@ -5,4 +5,6 @@ schemes:
 retain_objc_accessible: true
 retain_swift_ui_previews: true
 retain_codable_properties: true
-baseline: .periphery.baseline.json
+exclude_tests: true
+# After first successful scan: ./scripts/deadcode.sh --write-baseline .periphery.baseline.json
+# baseline: .periphery.baseline.json
