@@ -7,6 +7,8 @@
 
 See the rules in [`rules/always.md`](rules/always.md). Quality scripts live under [`quality/`](quality/).
 
+**New apps:** use the [ios-bootstrap](https://github.com/dbmrq/agent-skills/tree/main/skills/ios-bootstrap) agent skill (XcodeGen starter + this plug-in + warnings-as-errors). Ongoing work: [ios-quality-gate](https://github.com/dbmrq/agent-skills/tree/main/skills/ios-quality-gate).
+
 ## Supported AI tools
 
 | Tool | Config Location |
@@ -35,7 +37,12 @@ This will:
 4. Seed `.swiftlint.yml` (parent config), `.swiftformat`, `.periphery.yml` template, and `AGENTS.md`
 5. Install a pre-commit hook that re-syncs on commit
 
-Then edit `.periphery.yml` for your scheme/project/targets and run:
+Then:
+
+1. Edit `.periphery.yml` for your scheme/project (**no** `baseline:`)
+2. Set `SWIFT_TREAT_WARNINGS_AS_ERRORS: YES` on every Swift target (see `quality/xcodegen/settings-strict.yml`)
+3. Wire Quality Check `preBuildScripts` + `ENABLE_USER_SCRIPT_SANDBOXING: NO` on the app target
+4. Run:
 
 ```bash
 ./scripts/format.sh --fix
@@ -51,6 +58,23 @@ curl -fsSL …/install.sh | bash -s -- --dry-run
 curl -fsSL …/install.sh | bash -s -- --non-interactive --no-commit
 ```
 
+## Quality policy
+
+- **Warnings as errors** — compiler (`SWIFT_TREAT_WARNINGS_AS_ERRORS`) and SwiftLint (all curated rules are `error` severity).
+- **No Periphery baselines** — `./scripts/deadcode.sh` runs with `--strict`; delete unused code instead of suppressing.
+- **No force unwraps** — `force_unwrapping`, `force_try`, `force_cast`, `implicitly_unwrapped_optional` are errors.
+- **One shared config** — [`quality/.swiftlint.yml`](quality/.swiftlint.yml); apps only set `parent_config` + paths.
+
+### Curated SwiftLint rules
+
+| Family | Rules |
+| --- | --- |
+| Foot-guns | `force_cast`, `force_try`, `force_unwrapping`, `implicitly_unwrapped_optional` |
+| Size | `file_length` (400), `type_body_length` (250), `function_body_length` (50), `function_parameter_count` (7), `cyclomatic_complexity` (15), `nesting` |
+| Empty / redundancy | `empty_count`, `empty_string`, `redundant_nil_coalescing`, `unused_optional_binding`, `contains_over_filter_count`, `first_where` |
+| Idioms | `unavailable_condition`, `optional_data_string_conversion` |
+| Custom | `no_observable_object` |
+
 ## Quality plug-in layout
 
 | Path | Role |
@@ -58,12 +82,12 @@ curl -fsSL …/install.sh | bash -s -- --non-interactive --no-commit
 | `quality/.swiftlint.yml` | Shared lint rules (apps use `parent_config`; all errors) |
 | `quality/.swiftformat` | Shared formatting |
 | `quality/scripts/*` | Canonical check / format / deadcode / debt-report scripts |
-| `quality/debt/RATCHET.md` | Zero-suppression checklist (no Periphery baselines) |
+| `quality/debt/RATCHET.md` | Zero-suppression checklist (historical debt only) |
 | `quality/templates/*` | `.periphery.yml` + `AGENTS.md` seeds |
-| `quality/xcodegen/*` | Snippets for preBuild / Quality aggregate |
+| `quality/xcodegen/*` | preBuild, strict settings snippets |
 | `quality/ci/*` | Xcode Cloud pre/post fragments |
 
-Apps keep **thin overlays** only (scheme-specific Periphery config, optional lint path tweaks). Do **not** add Periphery baselines — fix unused code until `./scripts/deadcode.sh` is clean (`--strict`).
+Apps keep **thin overlays** only (scheme-specific Periphery config, optional lint path tweaks).
 
 ## Updating
 

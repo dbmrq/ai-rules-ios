@@ -1,0 +1,12 @@
+# XcodeGen: project / target settings for strict builds.
+#
+# Merge into settings.base (project and every Swift-compiling target):
+#
+# settings:
+#   base:
+#     SWIFT_TREAT_WARNINGS_AS_ERRORS: "YES"
+#
+# Application target that runs Quality Check also needs:
+#     ENABLE_USER_SCRIPT_SANDBOXING: NO
+
+SWIFT_TREAT_WARNINGS_AS_ERRORS: "YES"

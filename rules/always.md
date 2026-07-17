@@ -86,6 +86,14 @@ alwaysApply: true
 - Structure tests using Arrange-Act-Assert pattern
 - Use project-specific build/test scripts when available
 
+## Quality gates
+
+- Prefer the shared [ai-rules-ios](https://github.com/dbmrq/ai-rules-ios) plug-in (`.ai-rules/`) for SwiftLint, SwiftFormat, and Periphery — do not invent a second lint stack
+- Treat compiler warnings as errors (`SWIFT_TREAT_WARNINGS_AS_ERRORS`)
+- Never force-unwrap (`!` / `as!`); never commit Periphery baselines — fix unused code instead
+- Before finishing work: `./scripts/format.sh --fix`, `./scripts/check.sh`, and after structural edits `./scripts/deadcode.sh`
+- New apps: follow the **ios-bootstrap** agent skill; ongoing work: **ios-quality-gate**
+
 ## Accessibility
 
 - Make apps fully accessible from the start

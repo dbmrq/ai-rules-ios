@@ -2,13 +2,16 @@
 
 This project uses the [ai-rules-ios](https://github.com/dbmrq/ai-rules-ios) plug-in (`.ai-rules/`) for shared iOS guidance and quality gates.
 
+New greenfield apps: follow the **ios-bootstrap** skill (XcodeGen + this plug-in + warnings-as-errors). Finishing work: **ios-quality-gate**.
+
 ## Before finishing work
 
-1. Run `./scripts/check.sh` (SwiftFormat lint + SwiftLint).
-2. After structural edits or removing features, run `./scripts/check-all.sh` (also Periphery unused-code scan; needs a build/index store).
+1. Run `./scripts/check.sh` (SwiftFormat lint + SwiftLint — all curated rules are errors).
+2. After structural edits or removing features, run `./scripts/check-all.sh` (also Periphery `--strict`; needs a build/index store).
 3. Fix failures before considering the task done. Do not leave unused store/domain APIs behind.
-4. **No Periphery baselines** and **no force unwraps** (`!` / `as!`). See `.ai-rules/quality/debt/RATCHET.md` if chipping away historical debt.
-5. Optional: `./.ai-rules/quality/scripts/debt-report.sh` to see remaining lint/deadcode counts.
+4. **No Periphery baselines** and **no force unwraps** (`!` / `as!`).
+5. Keep `SWIFT_TREAT_WARNINGS_AS_ERRORS=YES` on Swift targets.
+6. Optional: `./.ai-rules/quality/scripts/debt-report.sh` for remaining counts.
 
 ## Project conventions
 
