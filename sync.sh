@@ -90,6 +90,7 @@ excluded:
   - .build
   - build
   - DerivedData
+  - Packages/**/.build
 EOF
     echo "Created .swiftlint.yml"
   fi
