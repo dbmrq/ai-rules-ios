@@ -1,6 +1,10 @@
-# XcodeGen: optional aggregate target for Periphery.
+# XcodeGen: optional Periphery target.
+# Note: some XcodeGen versions do not support `type: aggregate`. Prefer
+# `./scripts/deadcode.sh` and Xcode Cloud `ci_post_xcodebuild.sh` instead.
 #
-# MelvilQuality:   # rename per app
+# If your XcodeGen supports aggregates:
+#
+# AppQuality:
 #   type: aggregate
 #   platform: iOS
 #   settings:
