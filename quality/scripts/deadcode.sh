@@ -65,6 +65,14 @@ if [[ ${#EXTRA_ARGS[@]} -gt 0 ]]; then
 fi
 
 echo "==> periphery ${ARGS[*]}"
-periphery "${ARGS[@]}"
+set +e
+periphery_output="$(periphery "${ARGS[@]}" 2>&1)"
+periphery_status=$?
+set -e
+printf '%s\n' "$periphery_output"
+if [[ "$periphery_status" -ne 0 ]] || [[ "$periphery_output" == *"BUILD FAILED"* ]]; then
+  echo "error: periphery scan failed" >&2
+  exit 1
+fi
 
 echo "OK: deadcode.sh passed"
