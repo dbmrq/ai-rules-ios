@@ -44,10 +44,22 @@ EMPTY_BASE="$(mktemp)"
 python3 -c 'import json,sys; json.dump({"v1":{"usrs":[]}}, open(sys.argv[1],"w"))' "$EMPTY_BASE"
 
 PERI_ARGS=(scan --baseline "$EMPTY_BASE" --disable-update-check --strict)
-INDEX_STORE="$(
-  find "$HOME/Library/Developer/Xcode/DerivedData" /tmp -type d \( -path '*/Index.noindex/DataStore' -o -path '*/Index/DataStore' \) 2>/dev/null \
-    | head -n 1 || true
-)"
+PROJECT_NAME=""
+for proj in "$ROOT"/*.xcodeproj; do
+  if [[ -d "$proj" ]]; then
+    PROJECT_NAME="$(basename "$proj" .xcodeproj)"
+    break
+  fi
+done
+INDEX_STORE=""
+if [[ -n "$PROJECT_NAME" ]]; then
+  INDEX_STORE="$(
+    {
+      find "$HOME/Library/Developer/Xcode/DerivedData" -type d -path "*${PROJECT_NAME}*/Index.noindex/DataStore" 2>/dev/null || true
+      find "/tmp/${PROJECT_NAME}PeripheryDD" -type d -path '*/Index.noindex/DataStore' 2>/dev/null || true
+    } | head -n 1
+  )"
+fi
 if [[ -n "$INDEX_STORE" ]]; then
   PERI_ARGS+=(--skip-build --index-store-path "$INDEX_STORE")
   echo "Using index store: $INDEX_STORE"
