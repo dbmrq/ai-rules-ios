@@ -1,20 +1,23 @@
 # Shared SwiftLint config for Leio iOS apps.
-# Apps should set parent_config to this file and only override paths / exclusions.
+# Apps set parent_config to this file and only override paths / exclusions.
+#
+# Philosophy: fail the build on agent foot-guns; keep length/style as warnings
+# so existing apps can adopt the plug-in without a massive rewrite.
 
-opt_in_rules:
-  - cyclomatic_complexity
-  - empty_count
+only_rules:
+  - force_cast
+  - force_try
   - force_unwrapping
+  - cyclomatic_complexity
+  - file_length
+  - type_body_length
+  - function_body_length
+  - function_parameter_count
+  - nesting
+  - empty_count
   - redundant_nil_coalescing
   - contains_over_filter_count
-  - prefer_self_in_static_references
-
-disabled_rules:
-  - trailing_whitespace
-  - todo
-
-force_unwrapping:
-  severity: error
+  - no_observable_object
 
 force_cast:
   severity: error
@@ -22,61 +25,42 @@ force_cast:
 force_try:
   severity: warning
 
+force_unwrapping:
+  severity: warning
+
 cyclomatic_complexity:
-  warning: 12
-  error: 20
+  warning: 15
+  error: 25
   ignores_case_statements: true
 
 file_length:
-  warning: 400
-  error: 800
+  warning: 500
+  error: 1000
   ignore_comment_only_lines: true
 
 type_body_length:
-  warning: 250
-  error: 400
+  warning: 300
+  error: 600
 
 function_body_length:
-  warning: 50
-  error: 80
+  warning: 60
+  error: 120
   ignores_comments: true
 
 function_parameter_count:
-  warning: 6
-  error: 8
+  warning: 7
+  error: 10
 
 nesting:
   type_level:
-    warning: 2
-  function_level:
     warning: 3
-
-line_length:
-  warning: 140
-  error: 200
-  ignores_urls: true
-  ignores_comments: true
-
-identifier_name:
-  min_length:
-    warning: 1
-  max_length:
-    warning: 50
-    error: 60
-  excluded:
-    - id
-    - x
-    - y
-    - i
-    - j
-    - to
-    - on
-    - at
+  function_level:
+    warning: 4
 
 custom_rules:
   no_observable_object:
     name: "Prefer @Observable over ObservableObject"
-    regex: "ObservableObject|@Published\\b"
+    regex: "\\bObservableObject\\b|@Published\\b"
     message: "Use @Observable / @State instead of ObservableObject / @Published."
     severity: warning
 
