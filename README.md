@@ -10,7 +10,7 @@ See the rules in [`rules/always.md`](rules/always.md). Quality scripts live unde
 ## Supported AI tools
 
 | Tool | Config Location |
-|------|-----------------|
+| --- | --- |
 | [Augment](https://www.augmentcode.com/) | `.augment/rules/always.md` |
 | [Cursor](https://cursor.sh/) | `.cursor/rules/always.mdc` |
 | [Windsurf](https://codeium.com/windsurf) | `.windsurfrules` |
@@ -54,7 +54,7 @@ curl -fsSL …/install.sh | bash -s -- --non-interactive --no-commit
 ## Quality plug-in layout
 
 | Path | Role |
-|------|------|
+| --- | --- |
 | `quality/.swiftlint.yml` | Shared lint rules (apps use `parent_config`) |
 | `quality/.swiftformat` | Shared formatting |
 | `quality/scripts/*` | Canonical check / format / deadcode scripts |

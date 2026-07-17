@@ -8,7 +8,6 @@ NC='\033[0m'
 
 REPO_URL="https://github.com/dbmrq/ai-rules-ios.git"
 SUBTREE_DIR=".ai-rules"
-RULES_PATH="$SUBTREE_DIR/rules/always.md"
 
 DRY_RUN=false
 NO_COMMIT=false

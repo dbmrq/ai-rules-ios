@@ -22,12 +22,13 @@ jobs:
 
       - name: Check shell scripts
         run: |
-          shellcheck install.sh
-          shellcheck uninstall.sh
+          shellcheck install.sh uninstall.sh sync.sh
+          shellcheck quality/scripts/*.sh
+          shellcheck quality/ci/*.sh
 
-      - name: Test install script syntax
-        run: bash -n install.sh
-
-      - name: Test uninstall script syntax
-        run: bash -n uninstall.sh
+      - name: Test script syntax
+        run: |
+          bash -n install.sh uninstall.sh sync.sh
+          bash -n quality/scripts/*.sh
+          bash -n quality/ci/*.sh
 

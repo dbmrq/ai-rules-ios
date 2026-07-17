@@ -13,14 +13,11 @@ if [[ "$(basename "$SCRIPT_DIR")" == ".ai-rules" ]] || [[ -d "$SCRIPT_DIR/rules"
   # Running from .ai-rules/ or from the ai-rules-ios repo itself during development
   if [[ -d "$SCRIPT_DIR/../.git" ]] || git -C "$SCRIPT_DIR/.." rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
-    SUBTREE_DIR_NAME="$(basename "$SCRIPT_DIR")"
   else
     REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
-    SUBTREE_DIR_NAME=".ai-rules"
   fi
 else
   REPO_ROOT="$(git rev-parse --show-toplevel)"
-  SUBTREE_DIR_NAME=".ai-rules"
 fi
 
 cd "$REPO_ROOT"
