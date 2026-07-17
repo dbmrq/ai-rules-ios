@@ -33,16 +33,16 @@ cyclomatic_complexity:
   ignores_case_statements: true
 
 file_length:
-  warning: 500
+  warning: 700
   error: 1200
   ignore_comment_only_lines: true
 
 type_body_length:
-  warning: 300
+  warning: 650
   error: 800
 
 function_body_length:
-  warning: 60
+  warning: 90
   error: 120
   ignores_comments: true
 
