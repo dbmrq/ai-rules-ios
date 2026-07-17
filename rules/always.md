@@ -59,6 +59,9 @@ alwaysApply: true
 - Always add Previews to views
 - Use `@Observable` instead of `ObservableObject`
 - Keep views small and modular
+- Prefer configuration/parameter objects (and separate actions structs) over long view initializers that mix data, bindings, and callbacks
+- Prefer separate views per display mode (e.g. compact vs comfortable) over branching modes inside one `body`; share layout/chrome constants across modes
+- One primary type per file; within a feature, use semantic subfolders (rows, chrome, layout) when the file count grows
 - Prefer native SwiftUI controls over custom implementations:
   - Use button modifiers like `.bordered`, `.borderedProminent`
   - Use `GroupBox` for cards
