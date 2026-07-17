@@ -20,4 +20,11 @@
 #         echo "warning: skipping quality check (install: brew install swiftlint swiftformat)"
 #         exit 0
 #       fi
+#       # Local Xcode builds: auto-format first so wrap/style nits don't fail the build.
+#       # CI still requires a clean tree (format --fix is skipped there).
+#       if [[ "${CI:-}" != "TRUE" && "${CI:-}" != "1" && -z "${CI_PRIMARY_REPOSITORY_PATH:-}" ]]; then
+#         if [[ -x ./scripts/format.sh ]]; then
+#           ./scripts/format.sh --fix
+#         fi
+#       fi
 #       ./scripts/check.sh
