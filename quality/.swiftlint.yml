@@ -7,7 +7,6 @@
 only_rules:
   - force_cast
   - force_try
-  - force_unwrapping
   - cyclomatic_complexity
   - file_length
   - type_body_length
@@ -23,9 +22,6 @@ force_cast:
   severity: error
 
 force_try:
-  severity: warning
-
-force_unwrapping:
   severity: warning
 
 empty_count:
