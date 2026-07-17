@@ -1,0 +1,15 @@
+# XcodeGen: optional aggregate target for Periphery.
+#
+# MelvilQuality:   # rename per app
+#   type: aggregate
+#   platform: iOS
+#   settings:
+#     base:
+#       ENABLE_USER_SCRIPT_SANDBOXING: NO
+#   postbuildScripts:
+#     - name: Periphery
+#       basedOnDependencyAnalysis: false
+#       script: |
+#         set -euo pipefail
+#         cd "${SRCROOT}"
+#         ./scripts/deadcode.sh --format xcode

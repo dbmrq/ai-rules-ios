@@ -3,13 +3,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20macOS%20%7C%20tvOS%20%7C%20watchOS%20%7C%20visionOS-lightgrey.svg)
 
-**Single source of truth for AI coding assistants in iOS projects.**
+**Plug-in for Leio iOS apps:** shared AI coding guidelines **and** a reusable quality gate (SwiftLint, SwiftFormat, Periphery).
 
-This project provides a shared set of iOS development guidelines that are synced to all major AI coding assistants.
+See the rules in [`rules/always.md`](rules/always.md). Quality scripts live under [`quality/`](quality/).
 
-See the rules in [`rules/always.md`](rules/always.md).
-
-## Supported Tools
+## Supported AI tools
 
 | Tool | Config Location |
 |------|-----------------|
@@ -19,67 +17,75 @@ See the rules in [`rules/always.md`](rules/always.md).
 | [Cline](https://github.com/cline/cline) | `.clinerules` |
 | [GitHub Copilot](https://github.com/features/copilot) | `.github/copilot-instructions.md` |
 | [Claude Code](https://claude.ai/) | `.claude/rules/always.md` |
+| Any agent | `AGENTS.md` (tool-neutral) |
 
 ## Installation
 
-Run this command in your project's root directory:
+From your app repo root:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dbmrq/ai-rules-ios/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/dbmrq/ai-rules-ios/main/install.sh | bash -s -- --non-interactive --no-commit
 ```
 
 This will:
 
 1. Add ai-rules-ios as a git subtree at `.ai-rules/`
-2. Copy rules to all supported tool locations (read-only)
-3. Install a pre-commit hook to keep rules in sync
-4. Commit the changes
+2. Copy rules into all supported tool locations (read-only copies)
+3. Create thin `scripts/check.sh`, `format.sh`, `deadcode.sh`, `check-all.sh` wrappers
+4. Seed `.swiftlint.yml` (parent config), `.swiftformat`, `.periphery.yml` template, and `AGENTS.md`
+5. Install a pre-commit hook that re-syncs on commit
 
-### Installation Options
-
-```bash
-# Preview changes without making them
-curl -fsSL https://raw.githubusercontent.com/dbmrq/ai-rules-ios/main/install.sh | bash -s -- --dry-run
-
-# Install without committing
-curl -fsSL https://raw.githubusercontent.com/dbmrq/ai-rules-ios/main/install.sh | bash -s -- --no-commit
-```
-
-## Editing Rules
-
-Edit only `.ai-rules/rules/always.md` — the other files are read-only copies.
-
-To sync changes immediately, double-click `sync.command` in Finder, or run:
+Then edit `.periphery.yml` for your scheme/project/targets and run:
 
 ```bash
-.ai-rules/sync.command
+./scripts/format.sh --fix
+./scripts/check.sh
+# after an Xcode build:
+./scripts/deadcode.sh
 ```
 
-The pre-commit hook will also sync automatically when you commit.
+### Options
+
+```bash
+curl -fsSL …/install.sh | bash -s -- --dry-run
+curl -fsSL …/install.sh | bash -s -- --non-interactive --no-commit
+```
+
+## Quality plug-in layout
+
+| Path | Role |
+|------|------|
+| `quality/.swiftlint.yml` | Shared lint rules (apps use `parent_config`) |
+| `quality/.swiftformat` | Shared formatting |
+| `quality/scripts/*` | Canonical check / format / deadcode scripts |
+| `quality/templates/*` | `.periphery.yml` + `AGENTS.md` seeds |
+| `quality/xcodegen/*` | Snippets for preBuild / Quality aggregate |
+| `quality/ci/*` | Xcode Cloud pre/post fragments |
+
+Apps keep **thin overlays** only (scheme-specific Periphery config, optional lint path tweaks).
 
 ## Updating
 
-Re-run the install command to pull the latest rules:
-
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dbmrq/ai-rules-ios/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/dbmrq/ai-rules-ios/main/install.sh | bash -s -- --non-interactive --no-commit
 ```
 
-Or manually:
+Or:
 
 ```bash
 git subtree pull --prefix=.ai-rules https://github.com/dbmrq/ai-rules-ios.git main --squash
+.ai-rules/sync.sh
 ```
+
+## Editing rules
+
+Edit only `.ai-rules/rules/always.md` (or this upstream repo). Tool-specific files are read-only copies — run `.ai-rules/sync.command` or `sync.sh` after edits.
 
 ## Uninstalling
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/dbmrq/ai-rules-ios/main/uninstall.sh | bash
 ```
-
-## Contributing
-
-Contributions are welcome! Please open an issue or pull request.
 
 ## License
 

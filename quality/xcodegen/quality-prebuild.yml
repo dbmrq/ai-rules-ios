@@ -1,0 +1,9 @@
+# XcodeGen: paste onto your application target under preBuildScripts.
+#
+# preBuildScripts:
+#   - name: Quality Check
+#     basedOnDependencyAnalysis: false
+#     script: |
+#       set -euo pipefail
+#       cd "${SRCROOT}"
+#       ./scripts/check.sh

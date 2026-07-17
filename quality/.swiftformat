@@ -1,0 +1,15 @@
+# Shared SwiftFormat config for Leio iOS apps (indent matches typical XcodeGen project.yml).
+--swiftversion 6.0
+--indent 2
+--tabwidth 2
+--semicolons never
+--commas inline
+--trimwhitespace always
+--stripunusedargs closure-only
+--self remove
+--importgrouping testable-bottom
+--ifdef no-indent
+--wraparguments before-first
+--wrapparameters before-first
+--maxwidth 140
+--exclude .ai-rules,.build,build,DerivedData

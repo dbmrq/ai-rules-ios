@@ -1,0 +1,11 @@
+# Template — copy to project root as .periphery.yml and edit scheme/project/targets.
+project: YourApp.xcodeproj
+schemes:
+  - YourApp
+targets:
+  - YourApp
+retain_objc_accessible: true
+retain_swift_ui_previews: true
+retain_codable_properties: true
+retain_runtime_annotations: true
+baseline: .periphery.baseline.json
