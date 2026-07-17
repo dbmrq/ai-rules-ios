@@ -1,66 +1,107 @@
 # Shared SwiftLint config for Leio iOS apps.
 # Apps set parent_config to this file and only override paths / exclusions.
 #
-# Philosophy: fail the build on agent foot-guns; keep length/style as warnings
-# so existing apps can adopt the plug-in without a massive rewrite.
+# Philosophy: strict by default — no warning-only debt, no Periphery baselines.
+# Rule families expanded via quality/debt/RATCHET.md.
 
 only_rules:
+  # Foot-guns
   - force_cast
   - force_try
+  - force_unwrapping
+  - implicitly_unwrapped_optional
+  # Complexity / size
   - cyclomatic_complexity
   - file_length
   - type_body_length
   - function_body_length
   - function_parameter_count
   - nesting
+  # Empty / redundancy
   - empty_count
+  - empty_string
   - redundant_nil_coalescing
+  - unused_optional_binding
   - contains_over_filter_count
+  - first_where
+  # Conditions / idioms
+  - unavailable_condition
+  - optional_data_string_conversion
+  # Project custom
   - no_observable_object
 
 force_cast:
   severity: error
 
 force_try:
-  severity: warning
+  severity: error
+
+force_unwrapping:
+  severity: error
+
+implicitly_unwrapped_optional:
+  severity: error
 
 empty_count:
-  severity: warning
+  severity: error
+
+empty_string:
+  severity: error
+
+redundant_nil_coalescing:
+  severity: error
+
+unused_optional_binding:
+  severity: error
+
+contains_over_filter_count:
+  severity: error
+
+first_where:
+  severity: error
+
+unavailable_condition:
+  severity: error
+
+optional_data_string_conversion:
+  severity: error
 
 cyclomatic_complexity:
   warning: 15
-  error: 25
+  error: 15
   ignores_case_statements: true
 
 file_length:
-  warning: 700
-  error: 1200
+  warning: 400
+  error: 400
   ignore_comment_only_lines: true
 
 type_body_length:
-  warning: 650
-  error: 800
+  warning: 250
+  error: 250
 
 function_body_length:
-  warning: 90
-  error: 120
+  warning: 50
+  error: 50
   ignores_comments: true
 
 function_parameter_count:
   warning: 7
-  error: 10
+  error: 7
 
 nesting:
   type_level:
     warning: 3
+    error: 3
   function_level:
     warning: 4
+    error: 4
 
 custom_rules:
   no_observable_object:
     name: "Prefer @Observable over ObservableObject"
     regex: "\\bObservableObject\\b|@Published\\b"
     message: "Use @Observable / @State instead of ObservableObject / @Published."
-    severity: warning
+    severity: error
 
 reporter: xcode

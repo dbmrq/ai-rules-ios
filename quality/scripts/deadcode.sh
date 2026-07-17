@@ -43,7 +43,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-ARGS=(scan)
+ARGS=(scan --strict)
 if [[ "$SKIP_BUILD" == true ]]; then
   ARGS+=(--skip-build)
   if [[ -z "$INDEX_STORE" ]]; then
@@ -72,6 +72,11 @@ set -e
 printf '%s\n' "$periphery_output"
 if [[ "$periphery_status" -ne 0 ]] || [[ "$periphery_output" == *"BUILD FAILED"* ]]; then
   echo "error: periphery scan failed" >&2
+  exit 1
+fi
+if [[ "$periphery_output" == *"warning:"* ]] && [[ "$periphery_output" != *"No unused code detected"* ]]; then
+  # --strict should already non-zero; belt-and-suspenders for older periphery.
+  echo "error: periphery reported unused code (strict gate)" >&2
   exit 1
 fi
 

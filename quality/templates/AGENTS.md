@@ -7,6 +7,8 @@ This project uses the [ai-rules-ios](https://github.com/dbmrq/ai-rules-ios) plug
 1. Run `./scripts/check.sh` (SwiftFormat lint + SwiftLint).
 2. After structural edits or removing features, run `./scripts/check-all.sh` (also Periphery unused-code scan; needs a build/index store).
 3. Fix failures before considering the task done. Do not leave unused store/domain APIs behind.
+4. **No Periphery baselines** and **no force unwraps** (`!` / `as!`). See `.ai-rules/quality/debt/RATCHET.md` if chipping away historical debt.
+5. Optional: `./.ai-rules/quality/scripts/debt-report.sh` to see remaining lint/deadcode counts.
 
 ## Project conventions
 

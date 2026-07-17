@@ -55,14 +55,15 @@ curl -fsSL …/install.sh | bash -s -- --non-interactive --no-commit
 
 | Path | Role |
 | --- | --- |
-| `quality/.swiftlint.yml` | Shared lint rules (apps use `parent_config`) |
+| `quality/.swiftlint.yml` | Shared lint rules (apps use `parent_config`; all errors) |
 | `quality/.swiftformat` | Shared formatting |
-| `quality/scripts/*` | Canonical check / format / deadcode scripts |
+| `quality/scripts/*` | Canonical check / format / deadcode / debt-report scripts |
+| `quality/debt/RATCHET.md` | Zero-suppression checklist (no Periphery baselines) |
 | `quality/templates/*` | `.periphery.yml` + `AGENTS.md` seeds |
 | `quality/xcodegen/*` | Snippets for preBuild / Quality aggregate |
 | `quality/ci/*` | Xcode Cloud pre/post fragments |
 
-Apps keep **thin overlays** only (scheme-specific Periphery config, optional lint path tweaks).
+Apps keep **thin overlays** only (scheme-specific Periphery config, optional lint path tweaks). Do **not** add Periphery baselines — fix unused code until `./scripts/deadcode.sh` is clean (`--strict`).
 
 ## Updating
 

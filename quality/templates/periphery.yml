@@ -1,4 +1,5 @@
 # Template — copy to project root as .periphery.yml and edit scheme/project.
+# Do NOT add a baseline. Fix unused code until `./scripts/deadcode.sh` is clean (--strict).
 project: YourApp.xcodeproj
 schemes:
   - YourApp
@@ -6,5 +7,3 @@ retain_objc_accessible: true
 retain_swift_ui_previews: true
 retain_codable_properties: true
 exclude_tests: true
-# After first successful scan: ./scripts/deadcode.sh --write-baseline .periphery.baseline.json
-# baseline: .periphery.baseline.json

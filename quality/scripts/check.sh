@@ -28,7 +28,12 @@ echo "==> swiftformat --lint"
 swiftformat --lint --config "$FORMAT_CONFIG" .
 
 echo "==> swiftlint lint"
-# Warnings are reported but do not fail; rule severities of `error` still fail the build.
+# All enabled rules are errors — any violation fails the gate.
 swiftlint lint --config "$LINT_CONFIG" --quiet
+lint_status=$?
+if [[ "$lint_status" -ne 0 ]]; then
+  echo "error: swiftlint failed" >&2
+  exit "$lint_status"
+fi
 
 echo "OK: check.sh passed"
