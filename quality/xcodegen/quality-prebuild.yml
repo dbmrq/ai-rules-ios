@@ -1,11 +1,23 @@
 # XcodeGen: paste onto your application target under preBuildScripts.
-# Also set SWIFT_TREAT_WARNINGS_AS_ERRORS (see settings-strict.yml) and
-# ENABLE_USER_SCRIPT_SANDBOXING: NO on that target.
 #
 # preBuildScripts:
 #   - name: Quality Check
 #     basedOnDependencyAnalysis: false
 #     script: |
 #       set -euo pipefail
+#       # Xcode GUI builds use a minimal PATH that omits Homebrew.
+#       export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH}"
 #       cd "${SRCROOT}"
+#       if [[ ! -x ./scripts/check.sh ]]; then
+#         echo "error: ./scripts/check.sh missing — install ai-rules-ios quality plug-in" >&2
+#         exit 1
+#       fi
+#       if ! command -v swiftlint >/dev/null 2>&1 || ! command -v swiftformat >/dev/null 2>&1; then
+#         if [[ "${CI:-}" == "TRUE" || "${CI:-}" == "1" || -n "${CI_PRIMARY_REPOSITORY_PATH:-}" ]]; then
+#           echo "error: swiftlint/swiftformat required in CI" >&2
+#           exit 1
+#         fi
+#         echo "warning: skipping quality check (install: brew install swiftlint swiftformat)"
+#         exit 0
+#       fi
 #       ./scripts/check.sh
