@@ -19,7 +19,7 @@ See the rules in [`rules/always.md`](rules/always.md). Quality scripts live unde
 | [Cline](https://github.com/cline/cline) | `.clinerules` |
 | [GitHub Copilot](https://github.com/features/copilot) | `.github/copilot-instructions.md` |
 | [Claude Code](https://claude.ai/) | `.claude/rules/always.md` |
-| Any agent | `AGENTS.md` (tool-neutral) |
+| Any agent | `AGENTS.md` (stub pointing to project skills) |
 
 ## Installation
 
@@ -34,7 +34,7 @@ This will:
 1. Add ai-rules-ios as a git subtree at `.ai-rules/`
 2. Copy rules into all supported tool locations (read-only copies)
 3. Create thin `scripts/check.sh`, `format.sh`, `deadcode.sh`, `check-all.sh` wrappers
-4. Seed `.swiftlint.yml` (parent config), `.swiftformat`, `.periphery.yml` template, and `AGENTS.md`
+4. Seed `.swiftlint.yml` (parent config), `.swiftformat`, `.periphery.yml` template, and a short `AGENTS.md` stub that points to the project skills
 5. Install a pre-commit hook that re-syncs on commit
 
 Then:
@@ -83,7 +83,7 @@ curl -fsSL …/install.sh | bash -s -- --non-interactive --no-commit
 | `quality/.swiftformat` | Shared formatting |
 | `quality/scripts/*` | Canonical check / format / deadcode / debt-report scripts |
 | `quality/debt/RATCHET.md` | Zero-suppression checklist (historical debt only) |
-| `quality/templates/*` | `.periphery.yml` + `AGENTS.md` seeds |
+| `quality/templates/*` | `.periphery.yml` + `AGENTS.md` stub |
 | `quality/xcodegen/*` | preBuild, strict settings snippets |
 | `quality/ci/*` | Xcode Cloud pre/post fragments |
 
